@@ -5,7 +5,7 @@ yo
 */
 
 //show a loading screen when launched, until we get the user's session back
-setAction("Loading123 Hackbook", true);
+setAction("Loading Hackbook", true);
 
 //Swaps the pages out when the user taps on a choice
 function openPage(pageName, ignoreHistoryPush) {
