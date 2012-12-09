@@ -11,44 +11,65 @@
         <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.css">
     </head>
 
-    <body class="login">
+    <body>
 
-    <div class="container login">
-        <div class="row">
-            <div class="hero span12">
-                <div class="page-heading">
-                    <h1>Hangout</h1>
-                    <p>get together now!</p>
+        <div id="fb-root"></div>
+
+        <div class="container">
+            <!--login page-->
+            <div class="row login">
+                <div class="hero span12">
+                    <div class="page-heading">
+                        <h1>Hangout</h1>
+                        <p>get together now!</p>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button class="btn btn-large btn-block btn-primary" onclick="promptLogin()" type="button">Login</button>
                 </div>
             </div>
-            <div class="buttons">
-                <button class="btn btn-large btn-block btn-primary" type="button">Login</button>
+
+
+            <!--home page-->
+            <div class="row home">
+                <img id="my-picture" />
+                <h3 id="my-name"></h3>
             </div>
-        </div><!--/row-->
-    </div> <!-- /container -->
+
+        </div> <!-- /container -->
 
 
 
 
-      <script type="text/javascript" src="cordova-2.2.0.js"></script>
-      <script type="text/javascript" src="js/index.js"></script>
-      <script src="cdv-plugin-fb-connect.js"></script>
-      <script src="facebook_js_sdk.js"></script>
+        <script type="text/javascript" src="cordova-2.2.0.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script src="cdv-plugin-fb-connect.js"></script>
+        <script src="facebook_js_sdk.js"></script>
 
 
-      <script src="js/ui.js"></script>
-      <script src="js/auth.js"></script>
-      <script src="js/feed.js"></script>
-      <script src="js/graph_api.js"></script>
-      <script src="js/requests.js"></script>
-      <script src="js/jquery-1.8.3.js"></script>
-      <script src="js/bootstrap.js"></script>
+        <script src="js/ui.js"></script>
+        <script src="js/auth.js"></script>
+        <script src="js/feed.js"></script>
+        <script src="js/graph_api.js"></script>
+        <script src="js/requests.js"></script>
+        <script src="js/jquery-1.8.3.js"></script>
+        <script src="js/bootstrap.js"></script>
 
 
-      <script>
+        <script>
           document.addEventListener('deviceready', function() {
-          });
-      </script>
+              FB.init({
+                  appId: '253132044814518',
+                  nativeInterface: CDV.FB,
+                  useCachedDialogs: false
+              });
+
+              FB.getLoginStatus(handleStatusChange);
+
+              authUser();
+              updateAuthElements();
+              });
+        </script>
 
     </body>
 </html>

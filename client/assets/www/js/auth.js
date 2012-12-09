@@ -25,29 +25,22 @@ function handleStatusChange(session) {
         function(response) {
           if (!response.error) {
             user = response;
-            
             console.log('Got the user\'s name and picture: ');
-            console.log(response);
-            
+            console.log(JSON.stringify(response));
+
             //Update display of user name and picture
-            if (document.getElementById('user-name')) {
-              document.getElementById('user-name').innerHTML = user.name;
-            }
-            if (document.getElementById('user-picture')) {
-              if (user.picture.data) {
-                  document.getElementById('user-picture').src = user.picture.data.url;
-              } else {
-                  document.getElementById('user-picture').src = user.picture;
-              }
-            }
+            $(".row").hide();
+            $(".home").show();
+            $("#my-name").html(user.name)
+            $("#my-picture").attr("src",user.picture.data.url)
           }
           
-          clearAction();
+//          clearAction();
         });
     } else {
       document.body.className = 'not_connected';
       
-      clearAction();
+//      clearAction();
     }
 }
 
