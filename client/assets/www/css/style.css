@@ -16,6 +16,11 @@ body {
     );
 }
 
+/*loading page*/
+.loading {
+    margin-top:7em;
+}
+
 
 /*login page*/
 .login .hero{

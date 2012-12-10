@@ -7,7 +7,6 @@
 
 var user = [];
 
-//Detect when Facebook tells us that the user's session has been returned
 function authUser() {
   FB.Event.subscribe('auth.statusChange', handleStatusChange);
 }
@@ -16,37 +15,31 @@ function handleStatusChange(session) {
     console.log('Got the user\'s session: ', session);
     
     if (session.authResponse) {
-        document.body.className = 'connected';
-        
-        //Fetch user's id, name, and picture
-        FB.api('/me', {
-          fields: 'name, picture'
-        },
-        function(response) {
-          if (!response.error) {
-            user = response;
-            console.log('Got the user\'s name and picture: ');
-            console.log(JSON.stringify(response));
+        FB.api('/me',{fields: 'name, picture'},function(response) {
 
-            //Update display of user name and picture
-            $(".row").hide();
-            $(".home").show();
-            $("#my-name").html(user.name)
-            $("#my-picture").attr("src",user.picture.data.url)
-          }
-          
-//          clearAction();
-        });
+              if (!response.error) {
+                user = response;
+                console.log('Got the user\'s name and picture: ');
+                console.log(JSON.stringify(response));
+
+                //Update display of user name and picture
+                $(".page").hide();
+                $(".home").show();
+                $("#my-name").html(user.name)
+                $("#my-picture").attr("src",user.picture.data.url)
+              }
+            });
     } else {
-      document.body.className = 'not_connected';
-      
-//      clearAction();
+        $(".page").hide();
+        $(".login").show();
     }
 }
 
 //Prompt the user to login and ask for the 'email' permission
 function promptLogin() {
-  FB.login(null, {scope: 'email'});
+    $(".page").hide();
+    $(".loading").show();
+    FB.login(null, {scope: 'email'});
 }
 
 //This will prompt the user to grant you acess to their Facebook Likes

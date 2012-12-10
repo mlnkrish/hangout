@@ -41,7 +41,12 @@
           <root url="jar://$MODULE_DIR$/libs/cordova-2.2.0.jar!/" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/../../incubator-cordova-android-master/bin/templates/cordova/ApplicationInfo" />
+          <root url="file://$MODULE_DIR$/../../incubator-cordova-android-master/framework/src" />
+          <root url="file://$MODULE_DIR$/../../incubator-cordova-android-master/framework/test/org/apache/cordova" />
+          <root url="file://$MODULE_DIR$/../../incubator-cordova-android-master/test/src" />
+        </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
