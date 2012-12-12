@@ -3,11 +3,17 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app"
+    "start": "app.js"
   },
   "dependencies": {
     "express": "3.0.4",
     "ejs": "*",
-    "stylus": "*"
-  }
+    "stylus": "*",
+    "mongoose": "*"
+  },
+  "devDependencies": {
+        "mocha": "*",
+        "should": "*",
+        "supertest": "*"
+    }
 }

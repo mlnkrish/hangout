@@ -11,8 +11,10 @@ var express = require('express')
 
 var app = express();
 
+module.exports = app;
+
 app.configure(function(){
-  app.set('port', process.env.PORT || 3000);
+  app.set('port', 3000);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.use(express.favicon());
@@ -37,3 +39,4 @@ app.post('/users',user.create)
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
+
