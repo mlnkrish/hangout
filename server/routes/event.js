@@ -1,9 +1,8 @@
-
-var User = require('../models/models.js').User;
+var Event = require('../models/models.js').Event;
 
 exports.create = function(req, res)
                  {
-					User.save(req.body, function (err, doc) 
+					Event.save(req.body, function (err, doc) 
 								{
 							            if (err) {
 							                console.log("Error on update");
@@ -20,7 +19,7 @@ exports.create = function(req, res)
 
 exports.get = function(req, res)
                  {
-					User.get(req.params.id, function (err, user) 
+					Event.get(req.params.id, function (err, event) 
 								{
 							            if (err) {
 							                console.log("Error on get");
@@ -28,7 +27,7 @@ exports.get = function(req, res)
 							                res.send(500);
 							            } else {
 							                res.setHeader('Content-Type', 'application/json');
-							                res.send(200,JSON.stringify(user));
+							                res.send(200,JSON.stringify(event));
 							            }
 							    }
 							   ); 
