@@ -26,10 +26,13 @@ var Event = function() { };
 
 Event._save_given_id = function(id,event,fn){
 		  event['id'] = id;
-		  var event_json = JSON.stringify(event);
-	      client.multi()
-                .set("event:" + event['id'],event_json)
-                .sadd("event:created_by:" + event['created_by'], event['id'])
+		  var commands = [];
+		  commands.push(['set',"event:" + event['id'],JSON.stringify(event)]);
+		  commands.push(['lpush',"event:created_by:" + event['created_by'], event['id']]);
+		  event['invited_friends'].forEach(function(friend){
+		  	commands.push(['lpush',"user:" + friend['id'] + ":invited",event['id']]);
+		  });
+	      client.multi(commands)
                 .exec(function(err,replies){
                   	fn(err,event);
                 });
