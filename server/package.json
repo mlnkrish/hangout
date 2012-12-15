@@ -10,7 +10,8 @@
     "ejs": "*",
     "stylus": "*",
     "hiredis": "*",
-    "redis": "*"
+    "redis": "*",
+    "socket.io": "*"
   },
   "devDependencies": {
         "mocha": "*",

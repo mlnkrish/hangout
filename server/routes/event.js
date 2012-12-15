@@ -1,4 +1,5 @@
-var Event = require('../models/models.js').Event;
+var Event = require('../models/models.js').Event
+    ,socket_events = require('./socket_events.js')
 
 exports.create = function(req, res)
                  {
@@ -9,6 +10,7 @@ exports.create = function(req, res)
 							                console.log(err);
 							                res.send(500);
 							            } else {
+							            	socket_events.send_notification(event);
 							                console.log("updated event =" + event['id']);
 							                res.setHeader('Content-Type', 'application/json');
 							                res.send(200,JSON.stringify(event));

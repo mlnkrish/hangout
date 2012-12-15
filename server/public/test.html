@@ -1,0 +1,44 @@
+<html>
+<head>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/javascripts/jquery-1.8.3.js"></script>
+<script>
+  var socket = io.connect('http://localhost:3000');
+  socket.emit('register', "100000160408296", { my: 'data' });
+  socket.on('get_response', function (data) {
+    console.log(data);
+    // socket.emit('my other event', { my: 'data' });
+  }
+  );
+
+function post_data()
+{
+		var event_data = {
+                 "event_name": "Team outing",
+                 "location" : "bangalore",
+                 "created_by" : "11265765672",
+                 "event_date_time" : "2013/01/20 10:10 PM",
+                 "updated_time": "2012-11-07T09:08:57+0000",
+                 "invited_friends" :[
+                    {
+                       "name": "Krishnan Mln",
+                       "id": "100000160408296"
+                    }
+                    ]
+              }; 
+	$.ajax({
+    		'type': 'POST',
+    		'url': '/events',
+    		'data': JSON.stringify(event_data), //assuming you have the JSON library linked.
+    		'contentType': "application/json",
+    		'success': function() { console.log("success");},
+    		'error': function() {console.log("error");}
+	});	
+
+}
+</script>
+</head>
+<body>
+	<button type="button" onclick="post_data()">click here</button>
+</body>
+</html>

@@ -7,10 +7,14 @@ var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
   , app_event = require('./routes/event')
+  , socket_events = require('./routes/socket_events.js')
   , http = require('http')
-  , path = require('path');
+  , path = require('path')
+  , io = require('socket.io');
 
-var app = express();
+var app = express()
+  , server = require('http').createServer(app)
+  , io = io.listen(server);
 
 module.exports = app;
 
@@ -41,7 +45,16 @@ app.get('/events/:id', app_event.get);
 app.post('/events',app_event.create);
 
 
-http.createServer(app).listen(app.get('port'), function(){
+server.listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
 
+io.sockets.on('connection', function (socket) {
+
+  socket.on("register", function(user_id,msg) {
+    socket_events.Sockets[socket.id] = socket;
+    console.log('I received a private message with socket_id = ' + socket.id + " by user_id " , user_id, ' saying ', msg);
+    socket_events.socketEvent(user_id, socket.id);
+  });
+
+});
