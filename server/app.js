@@ -36,6 +36,7 @@ app.configure('development', function(){
 app.get('/', routes.index);
 app.get('/users/:id', user.get);
 app.post('/users',user.create);
+app.get('/users/:id/events', app_event.getUserEvents);
 app.get('/events/:id', app_event.get);
 app.post('/events',app_event.create);
 

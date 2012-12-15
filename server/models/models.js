@@ -2,6 +2,7 @@ var redis = require("redis"),
     client = redis.createClient();
 
 var START_DATE = new Date(2000,1,1);
+var MAX_TIME_IN_MILLI_SEC = new Date(2112,1,1) - new Date(2000,1,1);
 
 var User = function() { };
 
@@ -65,6 +66,24 @@ Event.get = function(id,fn){
      });
 };
 
+Event.getUserEvents = function(id,fn){
+	var current_date_score = new Date() - START_DATE;
+     client.zrangebyscore("user:" + id + ":invited", current_date_score, MAX_TIME_IN_MILLI_SEC, 'limit' , 0, 100 ,function(err,event_ids){
+     	if (err) fn(err);
+     	var redis_event_ids = [];
+     	event_ids.forEach(function(id){
+	  		redis_event_ids.push("event:" + id);
+		  });
+     	if (redis_event_ids.length == 0 ) return fn(null,[]);
+     	client.mget(redis_event_ids, function(err,event_jsons){
+     		var events = [];
+     		event_jsons.forEach(function(event){
+     			events.push(JSON.parse(event));
+     		});
+     		fn(err,events);	
+     	});     	
+     });
+};
 
 
 exports.User = User;

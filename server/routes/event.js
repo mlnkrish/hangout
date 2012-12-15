@@ -34,3 +34,20 @@ exports.get = function(req, res)
 							    }
 							   ); 
 				  };				  
+
+exports.getUserEvents = function(req, res)
+                 {
+					Event.getUserEvents(req.params.id, function (err, events) 
+								{
+							            if (err) {
+							                console.log("Error on get");
+							                console.log(err);
+							                res.send(500);
+							            } else {
+							            	console.log("get user event = " + req.params.id);
+							                res.setHeader('Content-Type', 'application/json');
+							                res.send(200,JSON.stringify(events));
+							            }
+							    }
+							   ); 
+				  };				  
