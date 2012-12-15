@@ -70,6 +70,7 @@ describe('API', function(){
                  "event_name": "Team outing",
                  "location" : "bangalore",
                  "created_by" : "11265765672",
+                 "event_date_time" : "2013/01/20 10:10 PM",
                  "updated_time": "2012-11-07T09:08:57+0000",
                  "invited_friends" :[
                     {

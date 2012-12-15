@@ -1,6 +1,8 @@
 var redis = require("redis"),
     client = redis.createClient();
 
+var START_DATE = new Date(2000,1,1);
+
 var User = function() { };
 
 User.save = function(user,fn){
@@ -27,10 +29,11 @@ var Event = function() { };
 Event._save_given_id = function(id,event,fn){
 		  event['id'] = id;
 		  var commands = [];
+		  var date_score = new Date(event['event_date_time']) - - START_DATE;
 		  commands.push(['set',"event:" + event['id'],JSON.stringify(event)]);
-		  commands.push(['lpush',"event:created_by:" + event['created_by'], event['id']]);
+		  commands.push(['zadd',"event:created_by:" + event['created_by'], date_score,event['id']]);
 		  event['invited_friends'].forEach(function(friend){
-		  	commands.push(['lpush',"user:" + friend['id'] + ":invited",event['id']]);
+		  	commands.push(['zadd',"user:" + friend['id'] + ":invited", date_score,event['id']]);
 		  });
 	      client.multi(commands)
                 .exec(function(err,replies){
