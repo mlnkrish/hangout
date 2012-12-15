@@ -3,7 +3,7 @@ var User = require('../models/models.js').User;
 
 exports.create = function(req, res)
                  {
-					User.save(req.body, function (err, doc) 
+					User.save(req.body, function (err, user) 
 								{
 							            if (err) {
 							                console.log("Error on update");
@@ -11,7 +11,8 @@ exports.create = function(req, res)
 							                res.send(500);
 							            } else {
 							                console.log("updated");
-							                res.send(200);
+							                res.setHeader('Content-Type', 'application/json');
+							                res.send(200,JSON.stringify(user));
 							            }
 							    }
 							   ); 
