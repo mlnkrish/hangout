@@ -16,6 +16,19 @@ var app = express()
   , server = require('http').createServer(app)
   , io = io.listen(server);
 
+var RedisStore = require('socket.io/lib/stores/redis')
+  , redis  = require('socket.io/node_modules/redis')
+  , pub    = redis.createClient()
+  , sub    = redis.createClient()
+  , client = redis.createClient();
+
+io.set('store', new RedisStore({
+  redisPub : pub
+, redisSub : sub
+, redisClient : client
+}));
+
+
 module.exports = app;
 
 app.configure(function(){
@@ -43,6 +56,7 @@ app.post('/users',user.create);
 app.get('/users/:id/events', app_event.getUserEvents);
 app.get('/events/:id', app_event.get);
 app.post('/events',app_event.create);
+app.post('/events/:id/comments', app_event.createComment);
 
 
 server.listen(app.get('port'), function(){
@@ -54,7 +68,17 @@ io.sockets.on('connection', function (socket) {
   socket.on("register", function(user_id,msg) {
     socket_events.Sockets[socket.id] = socket;
     console.log('I received a private message with socket_id = ' + socket.id + " by user_id " , user_id, ' saying ', msg);
+    console.log("Sockets length = " + Object.keys(socket_events.Sockets).length);
     socket_events.socketEvent(user_id, socket.id);
   });
 
+  socket.on('disconnect', function(){
+    console.log('******** removing socket_id = ' + socket.id );
+    delete socket_events.Sockets[socket.id];
+  });
+
+
 });
+
+
+

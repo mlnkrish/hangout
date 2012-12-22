@@ -13,7 +13,7 @@ exports.socketEvent = function(user_id,socket_id){
 };
 
 
-exports.send_notification = function(event){
+exports.send_notification = function(event,notification_type){
 	console.log("got to send_notification");
 	var user_ids = []
 	event['invited_friends'].forEach(function(friend){
@@ -25,9 +25,17 @@ exports.send_notification = function(event){
 		if(err) return;
 		socket_ids.forEach(function(socket_id){
 				if(socket_id && sockets[socket_id])
-				{	
-					console.log("writing to socket with get_response and json = " + JSON.stringify(event));
-					sockets[socket_id].emit('get_response', JSON.stringify(event));	
+				{						
+					if(notification_type == 'event')
+					{
+						console.log("writing to socket with send_event_notification and json = " + JSON.stringify(event));
+						sockets[socket_id].emit('send_event_notification', JSON.stringify(event));	
+					}
+					else
+					{
+						console.log("writing to socket with send_comment_notification and json = " + JSON.stringify(event));
+						sockets[socket_id].emit('send_comment_notification', JSON.stringify(event));	
+					}
 				}
 				else
 				{

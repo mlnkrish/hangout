@@ -82,6 +82,39 @@ describe('API', function(){
               };           
     };
 
+    test_event_with_comments = function(){
+              return {
+                 "event_name": "Team outing",
+                 "location" : "bangalore",
+                 "created_by" : "11265765672",
+                 "event_date_time" : "2013/01/20 10:10 PM",
+                 "updated_time": "2012-11-07T09:08:57+0000",
+                 "invited_friends" :[
+                    {
+                       "name": "Krishnan Mln",
+                       "id": "100000160408296"
+                    }
+                    ],
+                  "comments": [
+                              {
+                             "comment": "already added comment!!!",
+                             "created_by" : "11265765672",
+                             "created_date_time" : "2013/01/20 10:10 PM"
+                          }
+                  ]
+              };
+    };
+
+
+    test_comment = function(){
+              return {
+                 "comment": "Lets go !!!",
+                 "created_by" : "11265765672",
+                 "created_date_time" : "2013/01/20 10:10 PM"
+              };           
+    };
+
+
 
     it('should get events', function(done){
 
@@ -166,8 +199,50 @@ describe('API', function(){
 
     });
 
+    it('should create comment', function(done){
+      var eventId = 1
+      var anComment = test_comment()
+      var anEvent = test_event();
+      models.Event._save_given_id(eventId,anEvent,function(err){
+        if(err) throw done(err);
+        request(app)
+          .post('/events/' +  eventId + '/comments')
+          .expect('Content-Type', /json/)
+          .send(anComment)
+          .expect(200)
+          .end(function(err,res){
+              if(err) done(err);
+              var obj = res.body['comments'][0];
+              if(!anComment.equals(obj)) return done('error');
+              done();
+          });
+      });
+
+    });
+
+
+    it('should uppend comment', function(done){
+      var eventId = 1
+      var anComment = test_comment()
+      var anEvent = test_event_with_comments();
+      models.Event._save_given_id(eventId,anEvent,function(err){
+        if(err) throw done(err);
+        request(app)
+          .post('/events/' +  eventId + '/comments')
+          .expect('Content-Type', /json/)
+          .send(anComment)
+          .expect(200)
+          .end(function(err,res){
+              if(err) done(err);
+              var obj = res.body;
+              if(obj['comments'].length != 2) return done('wrong number of comments');
+              if(!anComment.equals(obj['comments'][1])) return done('error');
+              done();
+          });
+      });
+
+    });
 
   });
-
 
 });
