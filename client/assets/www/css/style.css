@@ -4,16 +4,20 @@ body {
     -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
     background-color:#E4E4E4;
-    background-image:linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-webkit-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-ms-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-webkit-gradient(
-        linear,
-        left top,
-        left bottom,
-        color-stop(0, #A7A7A7),
-        color-stop(0.51, #E4E4E4)
-    );
+}
+
+.left{
+    float:left;
+}
+
+.bb{
+    border-style:solid;
+    border-color:black;
+}
+
+.rb{
+    border-style:solid;
+    border-color:red;
 }
 
 /*loading page*/
@@ -36,4 +40,12 @@ body {
 
 .login .buttons .btn {
     margin-top:1em
+}
+
+/*Home Page*/
+.profile-pic {
+    margin:1em;
+}
+.profile-name {
+    margin:1em;
 }

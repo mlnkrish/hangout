@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
@@ -31,7 +32,7 @@
 
             <!--login page-->
             <div class="row login page hide">
-                <div class="hero span12">
+                <div class="hero">
                     <div class="page-heading">
                         <h1>Hangout</h1>
                         <p>get together now!</p>
@@ -44,9 +45,11 @@
 
 
             <!--home page-->
-            <div class="row home page hide">
-                <img id="my-picture" />
-                <h3 id="my-name"></h3>
+            <div class="row home page hide bb left">
+                <div class="span1 left">
+                    <img class="profile-pic" id="my-picture" />
+                    <span class="profile-name" id="my-name"></span>
+                </div>
             </div>
 
         </div> <!-- /container -->
@@ -60,8 +63,14 @@
         <script src="js/jquery-1.8.3.js"></script>
         <script src="js/bootstrap.js"></script>
 
-        <!--USER-->
-        <script src="js/login.js"></script>
+
+        <!--MODELS-->
+        <script src="js/config.js"></script>
+        <script src="js/models/user.js"></script>
+
+        <!--PAGES-->
+        <script src="js/pages/login.js"></script>
+        <script src="js/pages/home.js"></script>
 
 
 
@@ -69,7 +78,8 @@
         <script>
             document.addEventListener('deviceready', function() {
                 <!--initialize modules-->
-                login.init();
+                loginPage.init();
+                homePage.init();
 
 
                 <!--Kick-off app-->
@@ -78,7 +88,7 @@
                     nativeInterface: CDV.FB,
                     useCachedDialogs: false
                 });
-                login.checkLoginStatus();
+                loginPage.checkLoginStatus();
             });
         </script>
 
