@@ -1,1 +1,1 @@
-var SERVER_URL="http://223.228.24.154:3000/";
+var SERVER_URL="http://localhost:3000/";

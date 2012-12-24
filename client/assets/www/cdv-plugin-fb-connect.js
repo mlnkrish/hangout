@@ -10,6 +10,7 @@ CDV.FB = {
 
     cordova.exec(function() {
         var authResponse = JSON.parse(localStorage.getItem('cdv_fb_session') || '{"expiresIn":0}');
+        console.log("+++++ 1 ++++ authResponse =" + JSON.stringify(authResponse));
         if (authResponse && authResponse.expirationTime) {
           var nowTime = (new Date()).getTime();
           if (authResponse.expirationTime > nowTime) {
@@ -25,6 +26,7 @@ CDV.FB = {
     }, (fail?fail:null), 'org.apache.cordova.facebook.Connect', 'init', [apiKey]);
   },
   login: function(params, cb, fail) {
+    console.log("+++++ 2 ++++ params =" + JSON.stringify(params));
     params = params || { scope: '' };
     cordova.exec(function(e) { // login
         if (e.authResponse && e.authResponse.expiresIn) {
@@ -40,6 +42,7 @@ CDV.FB = {
   },
   logout: function(cb, fail) {
     cordova.exec(function(e) {
+      console.log("+++++ 3 ++++ e =" + JSON.stringify(e));
       localStorage.removeItem('cdv_fb_session');
       FB.Auth.setAuthResponse(null, 'notConnected');
       if (cb) cb(e);
@@ -47,11 +50,13 @@ CDV.FB = {
   },
   getLoginStatus: function(cb, fail) {
     cordova.exec(function(e) {
+      console.log("+++++ 4 ++++ e =" + JSON.stringify(e));
       if (cb) cb(e);
     }, (fail?fail:null), 'org.apache.cordova.facebook.Connect', 'getLoginStatus', []);
   },
   dialog: function(params, cb, fail) {
     cordova.exec(function(e) { // login
+      console.log("+++++ 5 ++++ e =" + JSON.stringify(e));
       if (cb) cb(e);
                   }, (fail?fail:null), 'org.apache.cordova.facebook.Connect', 'showDialog', [params] );
   }
