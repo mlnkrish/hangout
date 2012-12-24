@@ -1,5 +1,11 @@
 var FB_CONNECT_SERVICE = 'org.apache.cordova.facebook.Connect';
 
+var TEST_ACCESS_TOKEN = null;
+
+window.setTestAccessToken = function(value){
+	TEST_ACCESS_TOKEN = value;
+};
+
 window.MockCordova = {	
 	_serviceMap : {},
 
@@ -36,27 +42,39 @@ window.MockCordova = {
 
 }
 
-MockCordova.interceptExec(FB_CONNECT_SERVICE,'login',function(successFunction,failFunction){
-	if (successFunction)
-		successFunction({ authResponse: { expiresIn: 100000 } });
-});
+// MockCordova.interceptExec(FB_CONNECT_SERVICE,'login',function(successFunction,failFunction){
+// 	if (successFunction)
+// 		successFunction({ authResponse: { expiresIn: 100000 } });
+// });
 
 MockCordova.interceptExec(FB_CONNECT_SERVICE,'getLoginStatus',function(successFunction,failFunction){
 	if (successFunction)
-		successFunction({"authResponse":{"accessToken":"AAADmOOWcyLYBAJrtazy4tXZCmOZCq1a6Mjs2qZAOwneiCfInsYmXdIGZCZAj2pyOOY0WoFV1vxdlEasYp5DSC1IZBwrLyv5BvmjYmxq7enKQZDZD","session_key":true,"expiresIn":"5128724505","userId":"null","sig":"..."},"status":"connected"});
+		successFunction({"authResponse":{"accessToken": TEST_ACCESS_TOKEN,"session_key":true,"expiresIn":"5128724505","userId":"null","sig":"..."},"status":"connected"});
 });
 
+
 MockCordova.interceptExec(FB_CONNECT_SERVICE,'init',function(successFunction,failFunction){
+
+	var authResponse = localStorage.getItem('cdv_fb_session');
+	if(authResponse)
+	{
+		successFunction(authResponse);
+		return;
+	}
+
+	var url = 'https://www.facebook.com/dialog/oauth?client_id='+ window.TEST_APP_ID +'&redirect_uri=http://localhost:3000/facebook_response.html&scope=email&response_type=token';
+	var accessToken = window.showModalDialog(url,'name','height=255,width=500,toolbar=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no ,modal=yes');
+	console.log('data = ' + TEST_ACCESS_TOKEN);
 	if (successFunction)
 	{
-		var authResponse = {"accessToken":"AAADmOOWcyLYBAJrtazy4tXZCmOZCq1a6Mjs2qZAOwneiCfInsYmXdIGZCZAj2pyOOY0WoFV1vxdlEasYp5DSC1IZBwrLyv5BvmjYmxq7enKQZDZD","session_key":true,"expiresIn":"5128814057","userId":"1126143492","sig":"...","expirationTime":6485155655118};
+		var authResponse = {"accessToken":TEST_ACCESS_TOKEN,"session_key":true,"expiresIn":"5128814057","sig":"...","expirationTime":6485155655118};
 		localStorage.setItem('cdv_fb_session', JSON.stringify(authResponse));
 		successFunction(authResponse);
 	}
-		
 });
 
 
-function desktop_setup(){
+function desktop_setup(appId){
 	window.cordova = window.MockCordova;
+	window.TEST_APP_ID = appId;
 }

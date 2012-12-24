@@ -1,0 +1,16 @@
+<html>
+	<script>
+		function closeDialog()
+		{
+			var data = window.location.href;
+			var start = data.indexOf('#') + 14;
+			var end = data.indexOf('&');
+			var accessToken = data.substring(start,end)
+ 			window.opener.setTestAccessToken(accessToken); 
+ 			window.close();
+		}
+		closeDialog()
+	</script>
+<body>
+successfully login to facebook
+</body>
