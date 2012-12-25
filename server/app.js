@@ -4,9 +4,9 @@
  */
 
 var express = require('express')
-  , routes = require('./routes')
-  , user = require('./routes/user')
-  , app_event = require('./routes/event')
+  , controller = require('./controller')
+  , user = require('./controller/user')
+  , app_event = require('./controller/event')
   , path = require('path');
 
 var app = express()
@@ -34,7 +34,7 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-app.get('/', routes.index);
+app.get('/', controller.index);
 app.get('/users/:id', user.get);
 app.post('/users',user.create);
 app.get('/users/:id/events', app_event.getUserEvents);
