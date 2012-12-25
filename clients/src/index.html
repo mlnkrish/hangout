@@ -55,7 +55,7 @@
                     Login with facebook
                 </div>
                 <div class="buttons">
-                    <a id="loginButton" href="#home-page" data-transition="slide" data-role="button" data-icon="facebook">Login</a>
+                    <a id="loginButton" data-role="button" data-icon="facebook">Login</a>
                 </div>
             </div>
         </div>
@@ -109,11 +109,9 @@
                     nativeInterface: CDV.FB,
                     useCachedDialogs: false
                     });
-                    loginPage.checkLoginStatus();
             }
 
             document.addEventListener("deviceready", onDeviceReady, false);
-            
             function onLoad(){
                 if (!navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
                     desktop_setup('126578654070290');
@@ -124,53 +122,5 @@
 
         </script>
 
-    </head>
-
-    <body onload="onLoad()" >
-
-        <div id="fb-root"></div>
-
-
-        <div>
-            <!--loading page-->
-            <!--<div class="loading page" data-role="page">-->
-                <!--<div data-role="content">-->
-                    <!--<img src="img/loading.gif" alt="loading">-->
-                <!--</div>-->
-            <!--</div>-->
-
-
-            <!--login page-->
-            <!--<div class="login page" data-role="page">-->
-                <!--<div data-role="content">-->
-                    <!--<div class="page-heading">-->
-                        <!--<h1>Hangout</h1>-->
-                        <!--<p>get together now!</p>-->
-                    <!--</div>-->
-                    <!--<div class="buttons">-->
-                        <!--<button id="loginButton" type="button">Login</button>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-
-
-            <!--home page-->
-
-            <div class="home page" id="home-page" data-role="page">
-                <header data-role="header">
-                    <h1>My Hangouts</h1>
-                </header>
-                <footer data-role="footer" data-position="fixed">
-                    <nav data-role="navbar" data-iconpos="bottom">
-                        <ul>
-                            <li><a href="#" data-icon="home">Home</a></li>
-                            <li><a href="#" data-icon="plus">New</a></li>
-                            <li><a href="#" data-icon="user">Profile</a></li>
-                        </ul>
-                    </nav>
-                </footer>
-            </div>
-
-        </div> <!-- /container -->
     </body>
 </html>

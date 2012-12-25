@@ -6,8 +6,9 @@ Hangout.LoginPage = function(){
         FB.Event.subscribe('auth.statusChange', onLoginStatusChange);
     }
 
-    this.checkLoginStatus = function(){
-        FB.getLoginStatus(onLoginStatusChange);
+    this.loginFail = function(){
+        console.log("login failed, showing the login page.")
+        $.mobile.changePage($("#login-page"),{transition:"slide"});
     }
 
     var promptLogin = function () {

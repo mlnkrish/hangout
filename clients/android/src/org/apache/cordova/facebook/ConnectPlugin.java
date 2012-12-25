@@ -58,13 +58,10 @@ public class ConnectPlugin extends Plugin {
                         JSONObject o = new JSONObject(this.facebook.request("/me"));
                         this.userId = o.getString("id");
                     } catch (MalformedURLException e) {
-                       
                         e.printStackTrace();
                     } catch (IOException e) {
-                       
                         e.printStackTrace();
                     } catch (JSONException e) {
-                       
                         e.printStackTrace();
                     }
                 }
@@ -73,7 +70,7 @@ public class ConnectPlugin extends Plugin {
                     return new PluginResult(PluginResult.Status.OK, this.getResponse());
                 }
                 else {
-                    return new PluginResult(PluginResult.Status.NO_RESULT);
+                    return new PluginResult(PluginResult.Status.OK, this.getResponse());
                 }
             } catch (JSONException e) {
                
@@ -90,22 +87,19 @@ public class ConnectPlugin extends Plugin {
                     for (int i=0; i<args.length(); i++) {
                         permissions[i] = args.getString(i);
                     }
-                } catch (JSONException e1) {
-                   
-                    e1.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                     return new PluginResult(PluginResult.Status.ERROR, "Invalid JSON args used. Expected a string array of permissions.");
                 }
                 cordova.setActivityResultCallback(this);
-//                this.ctx.setActivityResultCallback(this);
                 this.permissions = permissions;
                 this.callbackId = callbackId;
                 Runnable runnable = new Runnable() {
                     public void run() {
                         me.facebook.authorize(cordova.getActivity(), me.permissions, new AuthorizeListener(me));
-                    };
+                    }
                 };
                 cordova.getActivity().runOnUiThread(runnable);
-//                this.ctx.runOnUiThread(runnable);
             } else {
                 pr = new PluginResult(PluginResult.Status.ERROR, "Must call init before login.");
             }
