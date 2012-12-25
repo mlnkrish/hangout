@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Hangout</title>
+
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.css">
+        <script type="text/javascript" src="js/ga.js"></script>
+        <script>
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-36941197-1']);
+            _gaq.push(['_setDomainName', 'none']);
+            _gaq.push(['_trackPageview', 'Index_Page']);
+        </script>
+    </head>
+
+    <body>
+
+        <div id="fb-root"></div>
+
+        <div class="container">
+            <!--loading page-->
+            <div class="row loading page">
+                <img src="img/loading.gif" alt="loading">
+            </div>
+
+
+            <!--login page-->
+            <div class="row login page hide">
+                <div class="hero">
+                    <div class="page-heading">
+                        <h1>Hangout</h1>
+                        <p>get together now!</p>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button id="loginButton" class="btn btn-large btn-block btn-primary" onclick="promptLogin()" type="button">Login</button>
+                </div>
+            </div>
+
+
+            <!--home page-->
+            <div class="row home page hide bb left">
+                <div class="span1 left">
+                    <img class="profile-pic" id="my-picture" />
+                    <span class="profile-name" id="my-name"></span>
+                </div>
+            </div>
+
+        </div> <!-- /container -->
+
+        <!--SDK-->
+        <script type="text/javascript" src="../cordova-2.2.0.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script src="cdv-plugin-fb-connect.js"></script>
+        <script src="desktop_setup.js"></script>
+        <script src="facebook_js_sdk.js"></script>
+        <script src="js/requests.js"></script>
+        <script src="js/jquery-1.8.3.js"></script>
+        <script src="js/bootstrap.js"></script>
+
+
+        <!--MODELS-->
+        <script src="js/config.js"></script>
+        <script src="js/models/user.js"></script>
+
+        <!--PAGES-->
+        <script src="js/pages/login.js"></script>
+        <script src="js/pages/home.js"></script>
+
+
+
+
+        <script>
+            function onDeviceReady(){
+                <!--initialize modules-->
+                loginPage.init();
+                homePage.init();
+
+                <!--Kick-off app-->
+                FB.init({
+                    appId: '126578654070290',
+                    nativeInterface: CDV.FB,
+                    useCachedDialogs: false
+                });
+                loginPage.checkLoginStatus();                
+            }
+
+            if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
+                    document.addEventListener("deviceready", onDeviceReady, false);
+            } else {
+                    desktop_setup('126578654070290');
+                    onDeviceReady(); //this is the browser
+            }
+        </script>
+
+    </body>
+</html>
