@@ -1,5 +1,9 @@
-var Event = require('../models/models.js').Event
-    ,socket_events = require('./socket_events.js')
+var Event = require('../models/models.js').Event;
+
+function send_notification (event,notification_type){
+	console.log("got to send_notification");
+}
+
 
 exports.create = function(req, res)
                  {
@@ -10,7 +14,7 @@ exports.create = function(req, res)
 							                console.log(err);
 							                res.send(500);
 							            } else {
-							            	socket_events.send_notification(event,'event');
+							            	send_notification(event,'event');
 							                console.log("updated event =" + event['id']);
 							                res.setHeader('Content-Type', 'application/json');
 							                res.send(200,JSON.stringify(event));
@@ -75,7 +79,7 @@ exports.createComment = function(req, res)
 									                	console.log(err);
 									                	res.send(500);
 									            	} else {
-							            				socket_events.send_notification(event,'comment');
+							            				send_notification(event,'comment');
 							                			console.log("updated comment for event=" + event['id']);
 							                			res.setHeader('Content-Type', 'application/json');
 							                			res.send(200,JSON.stringify(event));

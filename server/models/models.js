@@ -86,22 +86,6 @@ Event.getUserEvents = function(id,fn){
 };
 
 
-var Socket = function() { };
-
-Socket.save = function(user_id,socket_id){
-    client.set("user:" + user_id + ":socket",socket_id,function(){});
-};
-
-Socket.get = function(user_ids,fn){
-    var redis_ids = []
-    user_ids.forEach(function(user_id){
-        redis_ids.push("user:" + user_id + ":socket");
-    });
-    client.mget(redis_ids,fn);
-};
-
-
 exports.User = User;
 exports.Event = Event;
-exports.Socket = Socket;
 exports.clearDb = flushdb;
