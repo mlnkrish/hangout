@@ -8,11 +8,13 @@
 
         <link rel="stylesheet" type="text/css" href="css/jquery.mobile.css">
         <link rel="stylesheet" type="text/css" href="css/jqm-icon-pack-2.1.2-fa.css">
+        <link rel="stylesheet" type="text/css" href="css/mobiscroll-2.3.1.custom.min.css">
         <link rel="stylesheet" type="text/css" href="css/style.css">
 
         <!--SDK-->
         <script src="js/jquery-1.8.3.js"></script>
         <script src="js/jquery.mobile.js"></script>
+        <script src="js/mobiscroll-2.3.1.custom.min.js"></script>
         <script type="text/javascript" src="../cordova-2.2.0.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script src="js/config.js"></script>
@@ -66,11 +68,45 @@
             <header data-role="header">
                 <h1>My Hangouts</h1>
             </header>
-            <footer data-role="footer" data-position="fixed">
+            <footer data-role="footer" data-position="fixed" data-id="common-footer">
                 <nav data-role="navbar" data-iconpos="bottom">
                     <ul>
-                        <li><a href="#" data-icon="home">Home</a></li>
-                        <li><a href="#" data-icon="plus">New</a></li>
+                        <li><a href="#home-page" data-transition="slide" class="ui-btn-active ui-state-persist" data-icon="home">Home</a></li>
+                        <li><a href="#add-new-page" data-transition="slide" data-icon="plus">New</a></li>
+                        <li><a href="#" data-icon="user">Profile</a></li>
+                    </ul>
+                </nav>
+            </footer>
+        </div>
+
+
+        <!-- New Hangout Page -->
+        <div class="home page" id="add-new-page" data-role="page">
+            <header data-role="header">
+                <h1>New Hangout</h1>
+            </header>
+            <div data-role="content">
+                <form action="#"method="post" id="new-hangout-form">
+                    <div data-role="fieldcontain" class="ui-hide-label">
+                        <label for="ename">What? :</label>
+                        <input type="text" name="ename" id="ename" value="" placeholder="Name"/>
+                    </div>
+                    <div data-role="fieldcontain" class="ui-hide-label">
+                        <label for="elocation">What? :</label>
+                        <input type="text" name="elocation" id="elocation" value="" placeholder="Where"/>
+                    </div>
+                    <div data-role="fieldcontain"  class="ui-hide-label">
+                        <label for="edatetime">Date :</label>
+                        <input type="text" name="edatetime" id="edatetime" value="" placeholder="Date & Time">
+                    </div>
+
+                </form>
+            </div>
+            <footer data-role="footer" data-position="fixed" data-id="common-footer">
+                <nav data-role="navbar" data-iconpos="bottom">
+                    <ul>
+                        <li><a href="#home-page" data-transition="slide"  data-icon="home">Home</a></li>
+                        <li><a href="#" class="ui-btn-active ui-state-persist" data-icon="plus">New</a></li>
                         <li><a href="#" data-icon="user">Profile</a></li>
                     </ul>
                 </nav>
@@ -92,16 +128,19 @@
         <!--PAGES-->
         <script src="js/pages/login.js"></script>
         <script src="js/pages/home.js"></script>
+        <script src="js/pages/new-hangout.js"></script>
 
         <script>
             $( document ).bind( "mobileinit", function() {
                 $.mobile.allowCrossDomainPages = true;
+                $.mobile.page.prototype.options.degradeInputs.date = true;
             });
 
             function onDeviceReady() {
                 <!--initialize modules-->
                 loginPage.init();
                 homePage.init();
+                newHangoutPage.init();
 
                 <!--Kick-off app-->
                 FB.init({
