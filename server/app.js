@@ -44,7 +44,7 @@ app.configure(function(){
   app.use(app.router);
   app.use(require('stylus').middleware(__dirname + '/public'));
   app.use(express.static(path.join(__dirname, 'public')));
-  app.use(express.static(path.join(__dirname, '../clients/android/assets/www')));
+  app.use(express.static(path.join(__dirname, '../clients/src')));
 });
 
 app.configure('development', function(){
