@@ -39,10 +39,7 @@ Hangout.HomePage = function(){
 
     var render = function(){
         if($user.hasBasicData()){
-            $("#my-name").html($user.name)
-            $("#my-picture").attr("src",$user.pictureUrl)
-            $(".page").hide();
-            $(".home").show();
+            $.mobile.changePage($("#home-page"),{transition:"slide"});
         }
     }
 

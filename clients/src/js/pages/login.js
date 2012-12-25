@@ -11,8 +11,6 @@ Hangout.LoginPage = function(){
     }
 
     var promptLogin = function () {
-        $(".page").hide();
-        $(".loading").show();
         FB.login(null, {scope: 'email'});
     }
 
@@ -21,8 +19,7 @@ Hangout.LoginPage = function(){
         if (session.authResponse) {
             homePage.show();
         } else {
-            $(".page").hide();
-            $(".login").show();
+           $.mobile.changePage($("#login-page"),{transition:"slide"});
         }
     }
 }

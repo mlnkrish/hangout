@@ -1,11 +1,4 @@
 /*base styles*/
-body {
-    -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
-    -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
-    -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
-    background-color:#E4E4E4;
-}
-
 .left{
     float:left;
 }
@@ -20,32 +13,35 @@ body {
     border-color:red;
 }
 
-/*loading page*/
-.loading {
-    margin-top:7em;
+/*splash page*/
+.splash .splash-text {
+    position:absolute;
+    top:25%;
+    right:25%;
+    bottom:25%;
+    left:25%;
+    text-align:center;
 }
 
 
 /*login page*/
-.login .hero{
-    margin-top:7em;
-    text-align:center;
-}
-
-.login .buttons{
+.login .buttons {
     margin-top:3em;
     margin-bottom:3em;
     text-align:center;
 }
 
-.login .buttons .btn {
-    margin-top:1em
+.login .login-text {
+    margin-top:3em;
+    margin-bottom:3em;
+    text-align:center;
 }
+
 
 /*Home Page*/
 .profile-pic {
-    margin:1em;
+
 }
 .profile-name {
-    margin:1em;
+
 }
