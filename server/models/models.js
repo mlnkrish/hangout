@@ -18,7 +18,7 @@ User.save = function(user){
             }
      });
      return d.promise;
-}
+};
 
 User.get = function(id,fn){
     var d = Q.defer();
@@ -30,7 +30,7 @@ User.get = function(id,fn){
         }
      });
      return d.promise;
-}
+};
 
 var flushdb = function(fn){
   client.flushdb(fn);
@@ -82,7 +82,7 @@ Event._increment_event_count = function(){
             }
     });
     return d.promise;
-}
+};
 
 Event.save = function(event){
 	if(event['id'] != undefined)
@@ -122,7 +122,7 @@ Event._get_invited_event_ids = function(redis_id){
                                            }
                                        });
                     return d.promise;
-                }
+                };
 Event._get_events_given_ids = function(event_ids) {
                         var d = Q.defer();
                         var redis_event_ids = [];
@@ -146,7 +146,7 @@ Event._get_events_given_ids = function(event_ids) {
                             });
                         }
                         return d.promise;
-              }
+              };
 
 Event.getUserEvents = function(id){
     var created_events_promise = Event._get_invited_event_ids("event:created_by:" + id)
