@@ -7,20 +7,19 @@ function send_notification (event,notification_type){
 
 exports.create = function(req, res)
                  {
-					Event.save(req.body, function (err, event) 
+					Event.save(req.body)
+					.then(function (event) 
 								{
-							            if (err) {
-							                console.log("Error on update");
-							                console.log(err);
-							                res.send(500);
-							            } else {
-							            	send_notification(event,'event');
-							                console.log("updated event =" + event['id']);
-							                res.setHeader('Content-Type', 'application/json');
-							                res.send(200,JSON.stringify(event));
-							            }
-							    }
-							   ); 
+					            	send_notification(event,'event');
+					                console.log("updated event =" + event['id']);
+					                res.setHeader('Content-Type', 'application/json');
+					                res.send(200,JSON.stringify(event));
+							    })
+					.fail(function(err){
+					                console.log("Error on update");
+					                console.log(err);
+					                res.send(500);
+							    }); 
 				  };
 
 
@@ -65,18 +64,13 @@ exports.createComment = function(req, res)
 					            	else
 					            		anEvent['comments'] = [comment];
 
-					            		Event.save(anEvent, function (err, event) {
-								        	    if (err) {
-							            	    console.log("Error on get");
-							                	console.log(err);
-							                	res.send(500);
-							            	} else {
-					            				send_notification(event,'comment');
-					                			console.log("updated comment for event=" + event['id']);
-					                			res.setHeader('Content-Type', 'application/json');
-					                			res.send(200,JSON.stringify(event));
-					            			}
-					            		});
+					            	return Event.save(anEvent);
+					            })
+					.then(function (event){								        	    
+		            				send_notification(event,'comment');
+		                			console.log("updated comment for event=" + event['id']);
+		                			res.setHeader('Content-Type', 'application/json');
+		                			res.send(200,JSON.stringify(event));
 							    })
 					.fail(function (err){
 					                console.log("Error on get");

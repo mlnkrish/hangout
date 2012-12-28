@@ -121,43 +121,47 @@ describe('API', function(){
     it('should get events', function(done){
 
       var anEvent = test_event();
-      models.Event._save_given_id(1,anEvent,function(err){
-        if(err) throw done(err);
-        request(app)
-            .get('/users/' + anEvent['created_by'] + '/events/'+anEvent['id'])
-            .expect('Content-Type', /json/)
-            .expect(200)
-            .end(function(err,res){
-                if(err) done(err);
-                var obj = res.body;
-                anEvent['id'] = 1;
-                if(anEvent.equals(obj)) done();
-                else done('error');
-            });
-      });
-
+      models.Event._save_given_id(1,anEvent)
+                  .then(function(){
+                      request(app)
+                      .get('/users/' + anEvent['created_by'] + '/events/'+anEvent['id'])
+                      .expect('Content-Type', /json/)
+                      .expect(200)
+                      .end(function(err,res){
+                          if(err) done(err);
+                          var obj = res.body;
+                          anEvent['id'] = 1;
+                          if(anEvent.equals(obj)) done();
+                          else done('error');
+                      });            
+                  })
+                  .fail(function(err){
+                    throw done(err);            
+                  });
     });
   
     it('should create event', function(done){
 
       var prev_event_count = 10;
       var anEvent = test_event();
-      models.Event._set_event_count(prev_event_count,function(err){
-        if(err) throw done(err);
-        request(app)
-          .post('/users/' + anEvent['created_by'] + '/events')
-          .expect('Content-Type', /json/)
-          .send(anEvent)
-          .expect(200)
-          .end(function(err,res){
-              if(err) done(err);
-              var obj = res.body;
-              anEvent['id'] = prev_event_count + 1;
-              if(anEvent.equals(obj)) done();
-              else done('error');
-          });
-      });
-
+      models.Event._set_event_count(prev_event_count)
+                  .then(function(){
+                      request(app)
+                        .post('/users/' + anEvent['created_by'] + '/events')
+                        .expect('Content-Type', /json/)
+                        .send(anEvent)
+                        .expect(200)
+                        .end(function(err,res){
+                            if(err) done(err);
+                            var obj = res.body;
+                            anEvent['id'] = prev_event_count + 1;
+                            if(anEvent.equals(obj)) done();
+                            else done('error');
+                        });
+                      })
+                  .fail(function(err){
+                    throw done(err);            
+                  });
     });
 
     it('should update event', function(done){
@@ -165,39 +169,45 @@ describe('API', function(){
       var prev_event_count = 10;
       var anEvent = test_event();
       anEvent['id'] = 2;
-      models.Event._set_event_count(prev_event_count,function(err){
-        if(err) throw done(err);
-        request(app)
-          .post('/users/' + anEvent['created_by'] + '/events')
-          .expect('Content-Type', /json/)
-          .send(anEvent)
-          .expect(200)
-          .end(function(err,res){
-              if(err) done(err);
-              var obj = res.body;
-              if(anEvent.equals(obj)) done();
-              else done('error');
-          });
-      });
+      models.Event._set_event_count(prev_event_count)
+                  .then(function(){
+                      request(app)
+                        .post('/users/' + anEvent['created_by'] + '/events')
+                        .expect('Content-Type', /json/)
+                        .send(anEvent)
+                        .expect(200)
+                        .end(function(err,res){
+                            if(err) done(err);
+                            var obj = res.body;
+                            if(anEvent.equals(obj)) done();
+                            else done('error');
+                        });
+                      })
+                  .fail(function(err){
+                    throw done(err);            
+                  });
 
     });
 
     it('should get user invited event', function(done){
 
       var anEvent = test_event();
-      models.Event._save_given_id(1,anEvent,function(err){
-        if(err) throw done(err);
-        request(app)
-          .get('/users/' + anEvent['invited_friends'][0]['id'] + "/events")
-          .expect('Content-Type', /json/)
-          .expect(200)
-          .end(function(err,res){
-              if(err) done(err);
-              var obj = res.body[0];
-              if(anEvent.equals(obj)) done();
-              else done('error');
-          });
-      });
+      models.Event._save_given_id(1,anEvent)
+                  .then(function(){
+                          request(app)
+                            .get('/users/' + anEvent['invited_friends'][0]['id'] + "/events")
+                            .expect('Content-Type', /json/)
+                            .expect(200)
+                            .end(function(err,res){
+                                if(err) done(err);
+                                var obj = res.body[0];
+                                if(anEvent.equals(obj)) done();
+                                else done('error');
+                            });
+                          })
+                  .fail(function(err){
+                    throw done(err);            
+                  });
 
     });
 
@@ -205,20 +215,23 @@ describe('API', function(){
       var eventId = 1
       var anComment = test_comment()
       var anEvent = test_event();
-      models.Event._save_given_id(eventId,anEvent,function(err){
-        if(err) throw done(err);
-        request(app)
-          .post('/users/' + anEvent['created_by'] + '/events/' +  eventId + '/comments')
-          .expect('Content-Type', /json/)
-          .send(anComment)
-          .expect(200)
-          .end(function(err,res){
-              if(err) done(err);
-              var obj = res.body['comments'][0];
-              if(!anComment.equals(obj)) return done('error');
-              done();
-          });
-      });
+      models.Event._save_given_id(eventId,anEvent)
+                  .then(function(){
+                        request(app)
+                          .post('/users/' + anEvent['created_by'] + '/events/' +  eventId + '/comments')
+                          .expect('Content-Type', /json/)
+                          .send(anComment)
+                          .expect(200)
+                          .end(function(err,res){
+                              if(err) done(err);
+                              var obj = res.body['comments'][0];
+                              if(!anComment.equals(obj)) return done('error');
+                              done();
+                          });
+                        })
+                  .fail(function(err){
+                    throw done(err);            
+                  });
 
     });
 
@@ -227,21 +240,24 @@ describe('API', function(){
       var eventId = 1
       var anComment = test_comment()
       var anEvent = test_event_with_comments();
-      models.Event._save_given_id(eventId,anEvent,function(err){
-        if(err) throw done(err);
-        request(app)
-          .post('/users/' + anEvent['created_by'] + '/events/' +  eventId + '/comments')
-          .expect('Content-Type', /json/)
-          .send(anComment)
-          .expect(200)
-          .end(function(err,res){
-              if(err) done(err);
-              var obj = res.body;
-              if(obj['comments'].length != 2) return done('wrong number of comments');
-              if(!anComment.equals(obj['comments'][1])) return done('error');
-              done();
-          });
-      });
+      models.Event._save_given_id(eventId,anEvent)
+                  .then(function(){
+                        request(app)
+                          .post('/users/' + anEvent['created_by'] + '/events/' +  eventId + '/comments')
+                          .expect('Content-Type', /json/)
+                          .send(anComment)
+                          .expect(200)
+                          .end(function(err,res){
+                              if(err) done(err);
+                              var obj = res.body;
+                              if(obj['comments'].length != 2) return done('wrong number of comments');
+                              if(!anComment.equals(obj['comments'][1])) return done('error');
+                              done();
+                          });
+                        })
+                  .fail(function(err){
+                    throw done(err);            
+                  });
 
     });
 

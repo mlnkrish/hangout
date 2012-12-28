@@ -39,35 +39,61 @@ var flushdb = function(fn){
 
 var Event = function() { };
 
-Event._save_given_id = function(id,event,fn){
-		  event['id'] = id;
-		  var commands = [];
-		  var date_score = new Date(event['event_date_time']) - - START_DATE;
-		  commands.push(['set',"event:" + event['id'],JSON.stringify(event)]);
-		  commands.push(['zadd',"event:created_by:" + event['created_by'], date_score,event['id']]);
-		  event['invited_friends'].forEach(function(friend){
-		  	commands.push(['zadd',"user:" + friend['id'] + ":invited", date_score,event['id']]);
-		  });
-	      client.multi(commands)
-                .exec(function(err,replies){
-                  	fn(err,event);
-                });
+Event._save_given_id = function(id,event){
+  var d = Q.defer();
+  event['id'] = id;
+  var commands = [];
+  var date_score = new Date(event['event_date_time']) - - START_DATE;
+  commands.push(['set',"event:" + event['id'],JSON.stringify(event)]);
+  commands.push(['zadd',"event:created_by:" + event['created_by'], date_score,event['id']]);
+  event['invited_friends'].forEach(function(friend){
+  	commands.push(['zadd',"user:" + friend['id'] + ":invited", date_score,event['id']]);
+  });
+  client.multi(commands)
+        .exec(function(err,replies){
+            if(err) {
+               d.reject(err);
+            } else {
+              d.resolve(event);
+            }
+        });
+  return d.promise;
 };
 
-Event._set_event_count = function(count,fn){
-	client.set("event:count",count,fn);
+Event._set_event_count = function(count){
+    var d = Q.defer();
+	client.set("event:count",count,function(err,data){
+                    if(err) {
+                       d.reject(err);
+                    } else {
+                      d.resolve(data);
+                    }        
+    });
+    return d.promise;
 };
 
-Event.save = function(event,fn){
+Event._increment_event_count = function(){
+    var d = Q.defer();
+    client.incr("event:count", function(err,value){
+            if(err) {
+                d.reject(err);
+            } else {
+                d.resolve(value);
+            }
+    });
+    return d.promise;
+}
+
+Event.save = function(event){
 	if(event['id'] != undefined)
 	{
-		Event._save_given_id(event['id'],event,fn);
+		return Event._save_given_id(event['id'],event);
 	}
 	else{
-		client.incr("event:count", function(err,value){
-		  if(err) fn(err,null);
-		  Event._save_given_id(value,event,fn);
-    	});
+		return Event._increment_event_count()
+                .then(function(value){		  
+		              return Event._save_given_id(value,event);
+    	        });
 	}
 };
 
@@ -83,7 +109,7 @@ Event.get = function(id){
      return d.promise;
 };
 
-Event.getUserEvents = function(id,fn){
+Event.getUserEvents = function(id){
     var d = Q.defer();
 	var current_date_score = new Date() - START_DATE;
      client.zrangebyscore("user:" + id + ":invited", current_date_score, MAX_TIME_IN_MILLI_SEC, 'limit' , 0, 100 ,function(err,event_ids){
