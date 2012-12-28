@@ -71,30 +71,47 @@ Event.save = function(event,fn){
 	}
 };
 
-Event.get = function(id,fn){
+Event.get = function(id){
+    var d = Q.defer();
      client.get("event:" + id,function(err,event_json){
-     	if (err) fn(err);
-     	fn(err,JSON.parse(event_json));
+     	if (err){
+            d.reject(err);
+     	} else {
+            d.resolve(JSON.parse(event_json));
+        }
      });
+     return d.promise;
 };
 
 Event.getUserEvents = function(id,fn){
+    var d = Q.defer();
 	var current_date_score = new Date() - START_DATE;
      client.zrangebyscore("user:" + id + ":invited", current_date_score, MAX_TIME_IN_MILLI_SEC, 'limit' , 0, 100 ,function(err,event_ids){
-     	if (err) fn(err);
-     	var redis_event_ids = [];
-     	event_ids.forEach(function(id){
-	  		redis_event_ids.push("event:" + id);
-		  });
-     	if (redis_event_ids.length == 0 ) return fn(null,[]);
-     	client.mget(redis_event_ids, function(err,event_jsons){
-     		var events = [];
-     		event_jsons.forEach(function(event){
-     			events.push(JSON.parse(event));
-     		});
-     		fn(err,events);	
+ 	    if (err) {
+            d.reject(err);
+            return
+        }
+ 	    var redis_event_ids = [];
+ 	    event_ids.forEach(function(id){
+  		   redis_event_ids.push("event:" + id);
+	    });
+ 	    if (redis_event_ids.length == 0 ) {
+          d.resolve([]);
+            return;
+        }
+ 	    client.mget(redis_event_ids, function(err,event_jsons){
+ 		var events = [];
+ 		event_jsons.forEach(function(event){
+ 			events.push(JSON.parse(event));
+ 		});
+        if (err) {
+            d.reject(err);
+            return
+        }
+ 		d.resolve(events);	
      	});     	
      });
+     return d.promise;
 };
 
 

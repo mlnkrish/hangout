@@ -26,66 +26,62 @@ exports.create = function(req, res)
 
 exports.get = function(req, res)
                  {
-					Event.get(req.params.id, function (err, event) 
-								{
-							            if (err) {
-							                console.log("Error on get");
-							                console.log(err);
-							                res.send(500);
-							            } else {
-							            	console.log("get event = " + req.params.id);
-							                res.setHeader('Content-Type', 'application/json');
-							                res.send(200,JSON.stringify(event));
-							            }
+					Event.get(req.params.id)
+					.then(function (event){
+					            	console.log("get event = " + req.params.id);
+					                res.setHeader('Content-Type', 'application/json');
+					                res.send(200,JSON.stringify(event));
+							    })
+					.fail(function (err) {
+					                console.log("Error on get");
+					                console.log(err);
+					                res.send(500);
 							    }
 							   ); 
 				  };				  
 
 exports.getUserEvents = function(req, res)
                  {
-					Event.getUserEvents(req.params.fb_id, function (err, events) 
-								{
-							            if (err) {
-							                console.log("Error on get");
-							                console.log(err);
-							                res.send(500);
-							            } else {
-							            	console.log("get user event = " + req.params.id);
-							                res.setHeader('Content-Type', 'application/json');
-							                res.send(200,JSON.stringify(events));
-							            }
-							    }
-							   ); 
+					Event.getUserEvents(req.params.fb_id)
+					.then(function (events){
+					            	console.log("get user event = " + req.params.id);
+					                res.setHeader('Content-Type', 'application/json');
+					                res.send(200,JSON.stringify(events));
+							    })
+					.fail(function (err){
+					                console.log("Error on get");
+					                console.log(err);
+					                res.send(500);
+							    }); 
 				  };				  
 
 exports.createComment = function(req, res)
                  {
-					Event.get(req.params.id, function (err, anEvent) 
-								{
-							            if (err) {
-							                console.log("Error on get");
-							                console.log(err);
-							                res.send(500);
-							            } else {
-							            	var comment = req.body;
-							            	if (anEvent['comments'])
-							            		anEvent['comments'].push(comment);
-							            	else
-							            		anEvent['comments'] = [comment];
+					Event.get(req.params.id)
+					.then(function (anEvent){
+					            	var comment = req.body;
+					            	if (anEvent['comments'])
+					            		anEvent['comments'].push(comment);
+					            	else
+					            		anEvent['comments'] = [comment];
 
-							            		Event.save(anEvent, function (err, event) {
-   									        	    if (err) {
-									            	    console.log("Error on get");
-									                	console.log(err);
-									                	res.send(500);
-									            	} else {
-							            				send_notification(event,'comment');
-							                			console.log("updated comment for event=" + event['id']);
-							                			res.setHeader('Content-Type', 'application/json');
-							                			res.send(200,JSON.stringify(event));
-							            			}
-							            		});
-							    		}
+					            		Event.save(anEvent, function (err, event) {
+								        	    if (err) {
+							            	    console.log("Error on get");
+							                	console.log(err);
+							                	res.send(500);
+							            	} else {
+					            				send_notification(event,'comment');
+					                			console.log("updated comment for event=" + event['id']);
+					                			res.setHeader('Content-Type', 'application/json');
+					                			res.send(200,JSON.stringify(event));
+					            			}
+					            		});
+							    })
+					.fail(function (err){
+					                console.log("Error on get");
+					                console.log(err);
+					                res.send(500);
 							    });
 				 };
 				
