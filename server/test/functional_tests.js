@@ -122,7 +122,7 @@ describe('API', function(){
       models.Event._save_given_id(1,anEvent,function(err){
         if(err) throw done(err);
         request(app)
-            .get('/events/'+anEvent['id'])
+            .get('/users/' + anEvent['created_by'] + '/events/'+anEvent['id'])
             .expect('Content-Type', /json/)
             .expect(200)
             .end(function(err,res){
@@ -143,7 +143,7 @@ describe('API', function(){
       models.Event._set_event_count(prev_event_count,function(err){
         if(err) throw done(err);
         request(app)
-          .post('/events')
+          .post('/users/' + anEvent['created_by'] + '/events')
           .expect('Content-Type', /json/)
           .send(anEvent)
           .expect(200)
@@ -166,7 +166,7 @@ describe('API', function(){
       models.Event._set_event_count(prev_event_count,function(err){
         if(err) throw done(err);
         request(app)
-          .post('/events')
+          .post('/users/' + anEvent['created_by'] + '/events')
           .expect('Content-Type', /json/)
           .send(anEvent)
           .expect(200)
@@ -206,7 +206,7 @@ describe('API', function(){
       models.Event._save_given_id(eventId,anEvent,function(err){
         if(err) throw done(err);
         request(app)
-          .post('/events/' +  eventId + '/comments')
+          .post('/users/' + anEvent['created_by'] + '/events/' +  eventId + '/comments')
           .expect('Content-Type', /json/)
           .send(anComment)
           .expect(200)
@@ -228,7 +228,7 @@ describe('API', function(){
       models.Event._save_given_id(eventId,anEvent,function(err){
         if(err) throw done(err);
         request(app)
-          .post('/events/' +  eventId + '/comments')
+          .post('/users/' + anEvent['created_by'] + '/events/' +  eventId + '/comments')
           .expect('Content-Type', /json/)
           .send(anComment)
           .expect(200)

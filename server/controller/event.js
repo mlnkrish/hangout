@@ -43,7 +43,7 @@ exports.get = function(req, res)
 
 exports.getUserEvents = function(req, res)
                  {
-					Event.getUserEvents(req.params.id, function (err, events) 
+					Event.getUserEvents(req.params.fb_id, function (err, events) 
 								{
 							            if (err) {
 							                console.log("Error on get");

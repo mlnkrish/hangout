@@ -21,7 +21,7 @@ exports.create = function(req, res)
 
 exports.get = function(req, res)
                  {
-					User.get(req.params.id, function (err, user) 
+					User.get(req.params.fb_id, function (err, user) 
 								{
 							            if (err) {
 							                console.log("Error on get");

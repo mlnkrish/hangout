@@ -35,12 +35,12 @@ app.configure('development', function(){
 });
 
 app.get('/', controller.index);
-app.get('/users/:id', user.get);
+app.get('/users/:fb_id', user.get);
 app.post('/users',user.create);
-app.get('/users/:id/events', app_event.getUserEvents);
-app.get('/events/:id', app_event.get);
-app.post('/events',app_event.create);
-app.post('/events/:id/comments', app_event.createComment);
+app.get('/users/:fb_id/events', app_event.getUserEvents);
+app.get('/users/:fb_id/events/:id', app_event.get);
+app.post('/users/:fb_id/events',app_event.create);
+app.post('/users/:fb_id/events/:id/comments', app_event.createComment);
 
 
 server.listen(app.get('port'), function(){
