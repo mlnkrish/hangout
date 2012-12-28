@@ -109,35 +109,47 @@ Event.get = function(id){
      return d.promise;
 };
 
+Event._get_invited_event_ids = function(id){
+                    var d = Q.defer();
+                    var current_date_score = new Date() - START_DATE;                    
+                    client.zrangebyscore("user:" + id + ":invited", 
+                                          current_date_score, MAX_TIME_IN_MILLI_SEC, 
+                                          'limit' , 0, 100 ,function(err,event_ids){
+                                          if (err) {
+                                            d.reject(err);
+                                           }else{
+                                            d.resolve(event_ids)
+                                           }
+                                       });
+                    return d.promise;
+                }
+Event._get_events_given_ids = function(event_ids) {
+                        var d = Q.defer();
+                        var redis_event_ids = [];
+                        event_ids.forEach(function(id){
+                           redis_event_ids.push("event:" + id);
+                        });
+                        if (redis_event_ids.length == 0 ) {
+                          d.resolve([]);
+                            return;
+                        }
+                        client.mget(redis_event_ids, function(err,event_jsons){
+                                var events = [];
+                                event_jsons.forEach(function(event){
+                                    events.push(JSON.parse(event));
+                                });
+                                if (err) {
+                                    d.reject(err);
+                                }else{
+                                    d.resolve(events);  
+                                }
+                        });
+                        return d.promise;
+              }
+
 Event.getUserEvents = function(id){
-    var d = Q.defer();
-	var current_date_score = new Date() - START_DATE;
-     client.zrangebyscore("user:" + id + ":invited", current_date_score, MAX_TIME_IN_MILLI_SEC, 'limit' , 0, 100 ,function(err,event_ids){
- 	    if (err) {
-            d.reject(err);
-            return
-        }
- 	    var redis_event_ids = [];
- 	    event_ids.forEach(function(id){
-  		   redis_event_ids.push("event:" + id);
-	    });
- 	    if (redis_event_ids.length == 0 ) {
-          d.resolve([]);
-            return;
-        }
- 	    client.mget(redis_event_ids, function(err,event_jsons){
- 		var events = [];
- 		event_jsons.forEach(function(event){
- 			events.push(JSON.parse(event));
- 		});
-        if (err) {
-            d.reject(err);
-            return
-        }
- 		d.resolve(events);	
-     	});     	
-     });
-     return d.promise;
+    return Event._get_invited_event_ids(id)
+              .then(Event._get_events_given_ids)
 };
 
 
