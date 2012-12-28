@@ -1,23 +1,35 @@
 var redis = require("redis"),
-    client = redis.createClient();
+    client = redis.createClient(),
+    Q = require("q");;
 
 var START_DATE = new Date(2000,1,1);
 var MAX_TIME_IN_MILLI_SEC = new Date(2112,1,1) - new Date(2000,1,1);
 
 var User = function() { };
 
-User.save = function(user,fn){
+User.save = function(user){
+     var d = Q.defer();
 	 var user_json = JSON.stringify(user);
      client.set("user:" + user['id'],user_json,function(err){
-     		fn(err,user);
+            if(err) {
+                d.reject(err);
+            } else {
+                d.resolve(user);
+            }
      });
+     return d.promise;
 }
 
 User.get = function(id,fn){
+    var d = Q.defer();
      client.get("user:" + id,function(err,user_json){
-     	if (err) fn(err);
-     	fn(err,JSON.parse(user_json));
+        if(err) {
+            d.reject(err);
+        } else {
+     	    d.resolve(JSON.parse(user_json));
+        }
      });
+     return d.promise;
 }
 
 var flushdb = function(fn){

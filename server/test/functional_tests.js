@@ -32,8 +32,7 @@ describe('API', function(){
     };
 
     it('should get user', function(done){
-      models.User.save(test_user(),function(err){
-        if(err) throw done(err);
+      var test_function = function(){
         request(app)
             .get('/users/'+test_user()['id'])
             .expect('Content-Type', /json/)
@@ -43,8 +42,11 @@ describe('API', function(){
                 var obj = res.body;
                 if(test_user().equals(obj)) done();
                 else done('error');
-            });
-      });
+            })
+          };
+
+      models.User.save(test_user())
+      .then(test_function,function(err){throw done(err);});
     });
   
     it('should create user', function(done){
