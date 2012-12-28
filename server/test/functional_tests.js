@@ -84,6 +84,23 @@ describe('API', function(){
               };           
     };
 
+    test_event_mln = function(){
+              return {
+                 "event_name": "Team outing",
+                 "location" : "bangalore",
+                 "created_by" : "100000160408296",
+                 "event_date_time" : "2013/01/20 10:10 PM",
+                 "updated_time": "2012-11-07T09:08:57+0000",
+                 "invited_friends" :[
+                    {
+                       "name": "Venkatesh CM",
+                       "id": "11265765672"
+                    }
+                    ]
+              };           
+    };
+
+
     test_event_with_comments = function(){
               return {
                  "event_name": "Team outing",
@@ -192,7 +209,9 @@ describe('API', function(){
     it('should get user invited event', function(done){
 
       var anEvent = test_event();
-      models.Event._save_given_id(1,anEvent)
+      var mln_event = test_event_mln();
+      models.Event._save_given_id(1,mln_event)
+                  .then(function(){ return models.Event._save_given_id(2,anEvent) })
                   .then(function(){
                           request(app)
                             .get('/users/' + anEvent['invited_friends'][0]['id'] + "/events")
@@ -200,8 +219,9 @@ describe('API', function(){
                             .expect(200)
                             .end(function(err,res){
                                 if(err) done(err);
-                                var obj = res.body[0];
-                                if(anEvent.equals(obj)) done();
+                                var invited_event = res.body['invited'][0];
+                                var created_event = res.body['created'][0];
+                                if(anEvent.equals(invited_event) && mln_event.equals(created_event) ) done();
                                 else done('error');
                             });
                           })

@@ -42,10 +42,11 @@ exports.get = function(req, res)
 exports.getUserEvents = function(req, res)
                  {
 					Event.getUserEvents(req.params.fb_id)
-					.then(function (events){
-					            	console.log("get user event = " + req.params.id);
+					.then(function (events_array){
+					            	console.log("get user event = " + req.params.fb_id);
+					            	var response = { 'created' : events_array[0], 'invited': events_array[1]};
 					                res.setHeader('Content-Type', 'application/json');
-					                res.send(200,JSON.stringify(events));
+					                res.send(200,JSON.stringify(response));
 							    })
 					.fail(function (err){
 					                console.log("Error on get");

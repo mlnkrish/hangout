@@ -109,10 +109,10 @@ Event.get = function(id){
      return d.promise;
 };
 
-Event._get_invited_event_ids = function(id){
+Event._get_invited_event_ids = function(redis_id){
                     var d = Q.defer();
                     var current_date_score = new Date() - START_DATE;                    
-                    client.zrangebyscore("user:" + id + ":invited", 
+                    client.zrangebyscore(redis_id, 
                                           current_date_score, MAX_TIME_IN_MILLI_SEC, 
                                           'limit' , 0, 100 ,function(err,event_ids){
                                           if (err) {
@@ -130,10 +130,10 @@ Event._get_events_given_ids = function(event_ids) {
                            redis_event_ids.push("event:" + id);
                         });
                         if (redis_event_ids.length == 0 ) {
-                          d.resolve([]);
-                            return;
+                            d.resolve([]);
                         }
-                        client.mget(redis_event_ids, function(err,event_jsons){
+                        else {
+                            client.mget(redis_event_ids, function(err,event_jsons){
                                 var events = [];
                                 event_jsons.forEach(function(event){
                                     events.push(JSON.parse(event));
@@ -143,13 +143,17 @@ Event._get_events_given_ids = function(event_ids) {
                                 }else{
                                     d.resolve(events);  
                                 }
-                        });
+                            });
+                        }
                         return d.promise;
               }
 
 Event.getUserEvents = function(id){
-    return Event._get_invited_event_ids(id)
+    var created_events_promise = Event._get_invited_event_ids("event:created_by:" + id)
               .then(Event._get_events_given_ids)
+    var invited_events_promise = Event._get_invited_event_ids("user:" + id + ":invited")
+              .then(Event._get_events_given_ids)
+    return Q.all([created_events_promise,invited_events_promise]);
 };
 
 
