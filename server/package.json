@@ -15,7 +15,6 @@
     "node-uuid" : "*",
     "q" : "*",
     "apn" : "*",
-    "node-gcm" : "*"
   },
   "devDependencies": {
         "mocha": "*",
