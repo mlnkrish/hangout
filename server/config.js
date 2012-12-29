@@ -7,11 +7,11 @@ exports.config = {
   redis_client : function(){
 
   	if (process.env.REDISTOGO_URL){
-  		console.log('******************* +++++++++++ should come here url =' + process.env.REDISTOGO_URL );
+  		console.log('******************* connecting to redistogo url');
   		return require('redis-url').connect(process.env.REDISTOGO_URL);
   	}
   	else{
-  		console.log('******************* should not come here');
+  		console.log('******************* connecting to local redis');
   		return require("redis-url").connect();
 	}	
   }

@@ -44,6 +44,11 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
+app.options('*', function(req,res){
+    console.log('got options command')
+    res.send(200);
+})
+
 app.get('/', controller.index);
 app.post('/users', controller.authenticate, user.create);
 app.get('/users/:fb_id', controller.authenticate, user.get);
