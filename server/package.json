@@ -6,7 +6,7 @@
     "start": "app.js"
   },
   "dependencies": {
-    "express": "*",
+    "express": "2.5.x",
     "ejs": "*",
     "stylus": "*",
     "hiredis": "*",
