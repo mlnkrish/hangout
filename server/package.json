@@ -14,8 +14,7 @@
     "socket.io": "*",
     "node-uuid" : "*",
     "q" : "*",
-    "apn" : "*",
-    "node-gcm" : "*"
+    "apn" : "*"
   },
   "devDependencies": {
         "mocha": "*",
