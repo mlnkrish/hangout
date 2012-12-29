@@ -44,12 +44,6 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-// app.options('/users', function(req,res){
-//     console.log('got to /user options command')
-//     res.setHeader('Content-Type', 'application/json');
-//     res.send(200);
-// })
-
 app.get('/', controller.index);
 app.post('/users', controller.authenticate, user.create);
 app.get('/users/:fb_id', controller.authenticate, user.get);
