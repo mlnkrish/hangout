@@ -20,7 +20,7 @@ User.save = function(user){
      return d.promise;
 };
 
-User.get = function(id,fn){
+User.get = function(id){
     var d = Q.defer();
      client.get("user:" + id,function(err,user_json){
         if(err) {
@@ -31,6 +31,32 @@ User.get = function(id,fn){
      });
      return d.promise;
 };
+
+User.get_fb_id = function(uuid){
+    var d = Q.defer();
+    client.get('user:fb_id:' + uuid, function(err,value){
+        if(err) {
+          d.reject(err);
+        } else {
+          d.resolve(value);
+        }
+    });
+    return d.promise;
+};
+
+User.set_token = function(uuid,fb_id){
+    var d = Q.defer();
+    client.set('user:fb_id:' + uuid, fb_id, function(err,value){
+        if(err) {
+          d.reject(err);
+        } else {
+          d.resolve(value);
+        }
+    });
+    return d.promise;
+};
+
+
 
 var flushdb = function(fn){
   client.flushdb(fn);

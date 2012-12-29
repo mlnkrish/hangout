@@ -1,7 +1,8 @@
 var should = require('should'),
     app = require('../app'),
     models = require('../models/models.js')
-    request = require('supertest');
+    request = require('supertest'),
+    controller = require('../controller/index.js');
 
 require('./lib.js');  
 
@@ -9,6 +10,7 @@ require('./lib.js');
 describe('API', function(){
 
   beforeEach(function(done){
+    controller.DEBUG_FLAG = true;
     models.clearDb(done);
   });
 
@@ -136,7 +138,6 @@ describe('API', function(){
 
 
     it('should get events', function(done){
-
       var anEvent = test_event();
       models.Event._save_given_id(1,anEvent)
                   .then(function(){
