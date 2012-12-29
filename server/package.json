@@ -10,6 +10,7 @@
     "ejs": "*",
     "stylus": "*",
     "hiredis": "*",
+    "redis": "*",
     "redis-url": "*",
     "socket.io": "*",
     "node-uuid" : "*",
