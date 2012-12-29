@@ -12,7 +12,7 @@ exports.config = {
   	}
   	else{
   		console.log('******************* should not come here');
-  		// return require("redis-url").connect();
+  		return require("redis-url").connect();
 	}	
   }
 

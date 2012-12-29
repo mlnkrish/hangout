@@ -15,6 +15,15 @@ var app = express()
 
 module.exports = app;
 
+var allowCrossDomain = function(req, res, next) {
+  console.log('got to allowCrossDomain');
+    res.header('Access-Control-Allow-Origin', "*");
+    res.header('Access-Control-Allow-Methods', "GET, POST, OPTIONS");
+    res.header("Access-Control-Allow-Headers", "application/json")
+
+    next();
+}
+
 app.configure(function(){
   app.set('port', config.port());
   app.set('views', __dirname + '/views');
@@ -25,6 +34,7 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(express.cookieParser('your secret here'));
   app.use(express.session());
+  app.use(allowCrossDomain);
   app.use(app.router);
   app.use(require('stylus').middleware(__dirname + '/public'));
   app.use(express.static(path.join(__dirname, 'public')));
@@ -34,6 +44,11 @@ app.configure(function(){
 app.configure('development', function(){
   app.use(express.errorHandler());
 });
+
+app.options('/users', function(req,res){
+    res.setHeader('Content-Type', 'application/json');
+    res.send(200);
+})
 
 app.get('/', controller.index);
 app.post('/users', controller.authenticate, user.create);
