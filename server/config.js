@@ -5,11 +5,14 @@ exports.config = {
   	},
 
   redis_client : function(){
+
   	if (process.env.REDISTOGO_URL){
+  		console.log('******************* +++++++++++ should come here url =' + process.env.REDISTOGO_URL );
   		return require('redis-url').connect(process.env.REDISTOGO_URL);
   	}
   	else{
-  		return require("redis-url").connect();
+  		console.log('******************* should not come here');
+  		// return require("redis-url").connect();
 	}	
   }
 
