@@ -2,7 +2,7 @@ var User = require('../models/models.js').User,
    https = require('https'),
    uuid = require('node-uuid');;
 
-exports.DEBUG_FLAG = true;
+exports.DEBUG_FLAG = false;
 
 exports.index = function(req, res){
   res.render('index', { title: 'Express' });
