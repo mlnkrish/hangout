@@ -6,12 +6,16 @@
     "start": "app.js"
   },
   "dependencies": {
-    "express": "3.0.4",
+    "express": "*",
     "ejs": "*",
     "stylus": "*",
     "hiredis": "*",
-    "redis": "*",
-    "socket.io": "*"
+    "redis-url": "*",
+    "socket.io": "*",
+    "node-uuid" : "*",
+    "q" : "*",
+    "apn" : "*",
+    "node-gcm" : "*"
   },
   "devDependencies": {
         "mocha": "*",

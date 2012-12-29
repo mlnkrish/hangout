@@ -7,7 +7,8 @@ var express = require('express')
   , controller = require('./controller')
   , user = require('./controller/user')
   , app_event = require('./controller/event')
-  , path = require('path');
+  , path = require('path')
+  , config = require('./config').config;
 
 var app = express()
   , server = require('http').createServer(app);
@@ -15,7 +16,7 @@ var app = express()
 module.exports = app;
 
 app.configure(function(){
-  app.set('port', 3000);
+  app.set('port', config.port());
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.use(express.favicon());

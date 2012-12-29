@@ -1,6 +1,7 @@
-var redis = require("redis"),
-    client = redis.createClient(),
-    Q = require("q");;
+var config = require("../config").config,
+    client = config.redis_client(),
+    Q = require("q");
+
 
 var START_DATE = new Date(2000,1,1);
 var MAX_TIME_IN_MILLI_SEC = new Date(2112,1,1) - new Date(2000,1,1);
