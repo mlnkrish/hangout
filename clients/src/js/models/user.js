@@ -30,7 +30,7 @@ Hangout.User = function() {
                 type: "POST",
                 url: SERVER_URL+"users",
                 beforeSend: function(xhr) {
-                    xhr.setRequestHeader("fb_token", FB.getAccessToken());
+                    xhr.setRequestHeader("X-FB-TOKEN", FB.getAccessToken());
                 },
                 data: _u,
                 error:function(e){

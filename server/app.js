@@ -19,7 +19,7 @@ var allowCrossDomain = function(req, res, next) {
   console.log('got to allowCrossDomain');
     res.header('Access-Control-Allow-Origin', "*");
     res.header('Access-Control-Allow-Methods', "GET, POST, OPTIONS");
-    res.header("Access-Control-Allow-Headers", "application/json")
+    res.header("Access-Control-Allow-Headers", "X-FB-TOKEN")
 
     next();
 }

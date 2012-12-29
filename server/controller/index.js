@@ -59,7 +59,7 @@ exports.validate_fb_token = function(fb_token,req,res,next){
 }
 
 function validate_fb_token_and_generate_user_token(req,res,next){
-	var fb_token = req.header('fb_token');
+	var fb_token = req.header('X-FB-TOKEN');
 	if(!fb_token){
 		send_unauthorized(res,'access denied');
 	} else{
