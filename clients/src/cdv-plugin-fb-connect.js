@@ -53,6 +53,12 @@ CDV.FB = {
       if (cb) cb(e);
     }, (fail?fail:null), 'org.apache.cordova.facebook.Connect', 'logout', []);
   },
+  getLoginStatus: function(cb, fail) {
+    cordova.exec(function(e) {
+      console.log("+++++ 4 ++++ e =" + JSON.stringify(e));
+      if (cb) cb(e);
+    }, (fail?fail:null), 'org.apache.cordova.facebook.Connect', 'getLoginStatus', []);
+  },
   dialog: function(params, cb, fail) {
     cordova.exec(function(e) { // login
       console.log("+++++ 5 ++++ e =" + JSON.stringify(e));
